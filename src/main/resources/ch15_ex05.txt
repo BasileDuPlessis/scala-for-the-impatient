@@ -1,0 +1,3 @@
+Write a Scala method that returns a string containing all lines of a file.
+
+Call it from Java.
