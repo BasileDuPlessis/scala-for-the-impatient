@@ -12,3 +12,5 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "org.ccil.cowan.tagsoup" % "tagsoup" % "1.2"
+
+libraryDependencies += "org.scalesxml" %% "scales-xml" % "0.4.5"

@@ -2,7 +2,6 @@ package com.basile.scala.ch16
 
 import scala.xml.{Atom, Text, Elem}
 
-
 /**
  * Contrast
  * <li>Fred</li> match { case <li>{Text(t)}</li> => t }
@@ -12,15 +11,15 @@ import scala.xml.{Atom, Text, Elem}
  */
 object Ex03 extends App {
 
-  def getTextFromLi(elem: Elem): String = {
+  def getTextFromElem(elem: Elem): String = {
     elem match {
-      case <li>{Text(t)}</li> => t
+      case Elem(_, _, _, _, Text(t)) => t
     }
   }
 
-  def getAtomFromLi(elem: Elem): String = {
+  def getAtomFromElem(elem: Elem): String = {
     elem match {
-      case <li>{t:Atom[_]}</li> => t.toString()
+      case Elem(_, _, _, _, t:Atom[_]) => t.toString()
     }
   }
 
