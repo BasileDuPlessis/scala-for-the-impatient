@@ -1,6 +1,6 @@
 package com.basile.scala.ch16
 
-import scala.xml.{Atom, Text}
+import scala.xml.{Atom, Text, Elem}
 
 
 /**
@@ -11,15 +11,17 @@ import scala.xml.{Atom, Text}
  * differently ?
  */
 object Ex03 extends App {
-  <li>Fred</li> match {
-    case <li>{Text(t)}</li> => assert(assertion = true)
+
+  def getTextFromLi(elem: Elem): String = {
+    elem match {
+      case <li>{Text(t)}</li> => t
+    }
   }
 
-  <li>{"Fred"}</li> match {
-    case <li>{Text(t)}</li> => assert(assertion = false)
-    case <li>{_:Atom[_]}</li> => assert(assertion = true)
+  def getAtomFromLi(elem: Elem): String = {
+    elem match {
+      case <li>{t:Atom[_]}</li> => t.toString()
+    }
   }
-
-  //{"Fred"} is an embedded string and it's turned into an Atom[String]
 
 }
