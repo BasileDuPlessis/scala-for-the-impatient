@@ -1,7 +1,6 @@
 package com.basile.scala.ch16
 
 import scala.xml.{Elem, Text}
-import scala.collection.mutable.Map
 
 /**
  * Write a function that takes a dl element and turns it into a Map[String, String] .
@@ -11,18 +10,17 @@ import scala.collection.mutable.Map
 object Ex08 {
 
   def dlToMap(dl: Elem): Map[String, String] = {
-    val m = Map[String, String]()
-    var k, v = ""
+
+    var keys, values = List[String]()
 
     dl.child.foreach{
       n => n match {
-        case <dt>{Text(t)}</dt> => k = t
-        case <dd>{Text(t)}</dd> => v = t
+        case <dt>{Text(t)}</dt> => keys :+= t
+        case <dd>{Text(t)}</dd> => values :+= t
       }
-      m.put(k, v)
     }
 
-    m
+    keys.zip(values).toMap
 
   }
 

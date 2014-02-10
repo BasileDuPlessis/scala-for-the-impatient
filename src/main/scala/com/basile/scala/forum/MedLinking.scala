@@ -115,7 +115,7 @@ class ForumTitleApp(val forumName: String) {
 
                   try {
                     pageData.load(`forumName`, categoryId, subjectId)
-                    Thread.sleep(100)
+                    Thread.sleep(50)
                   } catch {
                     case e:java.net.ConnectException => throw new Exception(e.getMessage + " - " + t._2)
                   }
@@ -142,7 +142,7 @@ class ForumTitleApp(val forumName: String) {
  */
 object MedLinking extends App {
 
-  val forumName = "grossesse-bebe"
+  val forumName = "forme-beaute"
   val fromLine = 0
   val sourceHandler = Source.fromFile("""C:\dev\doctissimo_all_visits.2.csv""")
   val outputHandler: BufferedWriter = new BufferedWriter(
