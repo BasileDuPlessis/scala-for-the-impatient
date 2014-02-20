@@ -1,8 +1,7 @@
 package com.basile.scala.ch16
 
 import scala.xml.{NodeSeq, Document}
-import scala.xml.parsing._
-import scala.io.Source
+import scala.language.postfixOps
 
 /**
  *

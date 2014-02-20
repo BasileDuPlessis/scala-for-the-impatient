@@ -11,12 +11,12 @@ object Ex08 {
 
   def dlToMap(dl: Elem): Map[String, String] = {
 
-    var keys, values = List[String]()
+    val keys, values = scala.collection.mutable.ArrayBuffer[String]()
 
     dl.child.foreach{
       n => n match {
-        case <dt>{Text(t)}</dt> => keys :+= t
-        case <dd>{Text(t)}</dd> => values :+= t
+        case <dt>{Text(t)}</dt> => keys.append(t)
+        case <dd>{Text(t)}</dd> => values.append(t)
       }
     }
 

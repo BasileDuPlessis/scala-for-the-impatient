@@ -4,6 +4,7 @@ import scala.xml.transform.{RuleTransformer, RewriteRule}
 import scala.xml._
 import scala.xml.parsing.XhtmlParser
 import scala.io.Source
+import scala.language.postfixOps
 
 /**
  * Write a function that reads an XHTML document, carries out the transformation of the preceding exercise,

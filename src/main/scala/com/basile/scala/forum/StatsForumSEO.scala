@@ -27,7 +27,7 @@ object StatsForumSEO extends App {
 
   sourceHandler.getLines.foreach {
     l => l match {
-      case ForumRegExp.matchSubject1(url, forumName, categoryName, subjectId, visits) => {
+      case CsvRegExp.matchSubject1(url, forumName, categoryName, subjectId, visits) => {
 
         m.get(forumName) match {
           case None => m.put( forumName, Map( categoryName -> ArrayBuffer() ) )

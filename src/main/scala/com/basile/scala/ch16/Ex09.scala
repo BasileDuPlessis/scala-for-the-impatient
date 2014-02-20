@@ -4,6 +4,7 @@ import scala.xml.parsing.XhtmlParser
 import scala.io.Source
 import scala.xml.transform.{RuleTransformer, RewriteRule}
 import scala.xml.{Elem, Null, Attribute, Node}
+import scala.language.postfixOps
 
 /**
  * Transform an XHTML document by adding an alt="TODO" attribute to all img

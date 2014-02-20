@@ -95,22 +95,18 @@ trait CsvOutputComponent {
   class CsvWriterOutput(val writer:java.io.Writer) extends CsvOutput {
     def write(s: String*) {writer.write(format(s))}
   }
-
-  class CsvConsoleOutput extends CsvOutput {
-    def write(s: String*) {println(format(s))}
-  }
 }
+
 
 class ForumTitleApp(val forumName: String) {
   this: PageDataComponent with ForumCatIdsComponent
     with CsvSourceComponent with CsvOutputComponent  =>
       def run {
-
         csvSource.getLines.foreach {
           t => t._1 match {
-            case ForumRegExp.matchSubject1(url, `forumName`, categoryName, subjectId, visits) => {
+            case CsvRegExp.matchSubject1(url, `forumName`, categoryName, subjectId, visits) => {
               forumCatIds.get(`forumName`).getOrElse(categoryName.toLowerCase, null) match {
-                case null => throw new Exception("Key " + categoryName.toLowerCase + "do not exists")
+                case null => ()
                 case categoryId:String => {
 
                   try {
@@ -140,14 +136,14 @@ class ForumTitleApp(val forumName: String) {
 /**
  *
  */
-object MedLinking extends App {
+object GetTitle extends App {
 
-  val forumName = "forme-beaute"
-  val fromLine = 0
+  val forumName = "viepratique"
+  val fromLine = 1101648
   val sourceHandler = Source.fromFile("""C:\dev\doctissimo_all_visits.2.csv""")
   val outputHandler: BufferedWriter = new BufferedWriter(
     new OutputStreamWriter(
-      new FileOutputStream("""C:\dev\extract-forum-""" + forumName + """-title.csv""", true),
+      new FileOutputStream("""C:\dev\topics\extract-forum-""" + forumName + """-title.csv""", true),
       "UTF-8"
     )
   )

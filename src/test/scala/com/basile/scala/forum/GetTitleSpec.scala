@@ -5,6 +5,11 @@ import org.scalatest.FlatSpec
 trait ForumTitleAppTestComponent extends PageDataComponent
   with ForumCatIdsComponent with  CsvSourceComponent with CsvOutputComponent {
 
+  class CsvLogOutput extends CsvOutput {
+    var log: String = ""
+    def write(s: String*) {log += format(s)}
+  }
+
   val forumCatIds = new ForumCatIds(
     (f: String) => """{"resource":{"resources":[{"id":38, "url_name":"apples_and_pears"}]}}"""
   )
@@ -17,7 +22,7 @@ trait ForumTitleAppTestComponent extends PageDataComponent
     "0,http://forum.doctissimo.fr/grossesse-bebe/apples_and_pears/transat-choisir-sujet_604415_1.htm,1"
   ))
 
-  val csvOutput = new CsvConsoleOutput()
+  val csvOutput = new CsvLogOutput()
 
 }
 
@@ -25,10 +30,17 @@ trait ForumTitleAppTestComponent extends PageDataComponent
 /**
  *
  */
-class MedLinkingSpec extends FlatSpec {
+class GetTitleSpec extends FlatSpec {
 
-  val forumTitleApp = new ForumTitleApp("grossesse-bebe") with ForumTitleAppTestComponent
+  "ForumTitleApp.run" should "Return formatted csv line" in {
+    val forumTitleApp = new ForumTitleApp("grossesse-bebe") with ForumTitleAppTestComponent
+    forumTitleApp.run
 
-  forumTitleApp.run
+    val log = "http://forum.doctissimo.fr/grossesse-bebe/apples_and_pears/transat-choisir-sujet_604415_1.htm" +
+      "\tgrossesse-bebe\t38\tapples_and_pears\t604415\t1\tApple pie\n"
+
+    assert(forumTitleApp.csvOutput.log == log)
+  }
+
 
 }
