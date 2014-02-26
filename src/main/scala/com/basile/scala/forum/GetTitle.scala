@@ -138,8 +138,8 @@ class ForumTitleApp(val forumName: String) {
  */
 object GetTitle extends App {
 
-  val forumName = "viepratique"
-  val fromLine = 1101648
+  val forumName = "voyages"
+  val fromLine = 0
   val sourceHandler = Source.fromFile("""C:\dev\doctissimo_all_visits.2.csv""")
   val outputHandler: BufferedWriter = new BufferedWriter(
     new OutputStreamWriter(
