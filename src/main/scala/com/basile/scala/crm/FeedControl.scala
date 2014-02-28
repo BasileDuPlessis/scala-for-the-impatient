@@ -203,12 +203,12 @@ object FeedControl extends App {
       Source.fromFile(f.toString).getLines.drop(1).foreach{
         l => {
 
-
+/*
           CsvRegExp.csvLineMatch.findFirstIn(l) match {
             case None => outputFormatErrorsHandler.write(l + "\n")
             case Some(_) => ()
           }
-
+*/
           val matchData = CsvRegExp.csvMatch.findAllMatchIn(l).toList
 
           matchData.length match {
@@ -238,12 +238,12 @@ object FeedControl extends App {
           }
 
           //validate line
-          /*
+
           validateFields(Map(header.zip(tempData).toArray: _*)) match {
             case false => outputDataErrorsHandler.write(l + "\n")
             case _ => ()
           }
-          */
+
 
 
         }
