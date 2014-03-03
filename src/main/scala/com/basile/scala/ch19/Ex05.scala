@@ -1,12 +1,6 @@
 package com.basile.scala.ch19
 
-import scala.xml.XML
-import scala.util.parsing.combinator.lexical.StdLexical
-import scala.util.matching.Regex
-import scala.util.parsing.combinator.syntactical.StdTokenParsers
-import scala.util.parsing.combinator.token.StdTokens
-import scala.util.parsing.input.CharArrayReader.EofCh
-
+import scala.util.parsing.combinator.RegexParsers
 
 
 /**
@@ -22,7 +16,11 @@ import scala.util.parsing.input.CharArrayReader.EofCh
  */
 object Ex05 extends App {
 
-  class XmlLexical extends StdLexical   {
+
+  //In order to ype match List[Node]
+  case class XmlListHolder(list: List[scala.xml.Node])
+
+  class XmlParser extends RegexParsers {
 
     val startName = """:A-Z_a-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02FF\u0370-\u037d""" +
       """\u037f-\u1fff\u200c-\u200d\u2070-\u218f\u2c00-\u2fef\u3001-\ud7ff""" +
@@ -31,47 +29,41 @@ object Ex05 extends App {
 
     val nameReg = ("[" + startName + "][" + startName + name + "]*").r
 
+    val textReg = """[^><]+""".r
 
-      def regex(r: Regex): Parser[String] = new Parser[String] {
-        def apply(in: Input) =
-          r.findPrefixMatchOf( in.source.subSequence(in.offset, in.source.length)) match {
-            case Some(matched) => Success(
-                in.source.subSequence(in.offset, in.offset + matched.end).toString,
-                in.drop(matched.end)
-              )
-            case None => Failure("string matching regex `" + r + "' expected but " + in.first + " found", in)
-          }
-      }
+    val xml = text | node | minimizeNode
 
-      override def token: Parser[Token] =
-        (
-          ('<' <~ opt('/')) ~ regex(nameReg) ~'>' ^^ {
-            case '<' ~ n ~ '>' => processIdent(n)
-          }
-          | rep(chrExcept('<', '>', EofCh) ) ^^ { case chars => StringLit(chars mkString "") }
-          | EofCh ^^^ EOF
-          | delim
-          | failure("illegal character")
-        )
+    def text: Parser[scala.xml.Node] = textReg ^^ {
+      case s: String => new scala.xml.Text(s)
+    }
 
-  }
-
-  class XmlParser extends StdTokenParsers {
-    type Tokens = StdTokens
-    val lexical = new XmlLexical
-
-    def xml: Parser[Any] = ident into {
-      name => (stringLit | xml) <~ accept(
-        "closing tag", {case lexical.Identifier(`name`) => `name` }
+    def minimizeNode: Parser[scala.xml.Node] = '<'  ~> (nameReg <~ opt(' ') ~ '/' ~'>') ^^ {
+      case s: String => new scala.xml.Elem(
+        null, s, scala.xml.Null, scala.xml.TopScope, true
       )
     }
 
-    def parseAll(p: Parser[Any], in: String): ParseResult[Any] = phrase(p)(new lexical.Scanner(in))
+    def startTag: Parser[String] = '<' ~> (nameReg <~ '>') ^^ {
+      case s: String => s
+    }
+
+    def endTag(name: String): Parser[String] = '<' ~ '/' ~> (nameReg <~ '>') ^^ {
+      case s: String if s == `name` => s
+    }
+
+    def node: Parser[scala.xml.Node] = startTag into {
+      name => (rep(xml) ^^ {r => new XmlListHolder(r)}) <~ endTag(`name`) ^^ {
+        case x: XmlListHolder =>
+          new scala.xml.Elem(
+            null, `name`, scala.xml.Null, scala.xml.TopScope, true, x.list:_*
+          )
+      }
+    }
+
   }
 
   val parser = new XmlParser
-  val result = parser.parseAll(parser.xml, "<title>Hello world!</title>")
+  val result = parser.parseAll(parser.xml, "<p>Hello <strong>wor<i>l</i></strong><em>d</em><br />!</p>")
 
-  if (result.successful) println(result.get) else println(result)
-
+  if (result.successful) result.get(0).child.foreach(println)
 }
