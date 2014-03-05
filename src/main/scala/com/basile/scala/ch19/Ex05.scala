@@ -1,6 +1,7 @@
 package com.basile.scala.ch19
 
 import scala.util.parsing.combinator.RegexParsers
+import scala.{xml => sxml}
 
 
 /**
@@ -18,7 +19,7 @@ object Ex05 extends App {
 
 
   //In order to ype match List[Node]
-  case class XmlListHolder(list: List[scala.xml.Node])
+  case class XmlListHolder(list: List[sxml.Node])
 
   class XmlParser extends RegexParsers {
 
@@ -27,43 +28,86 @@ object Ex05 extends App {
       """\uf900-\ufdcf\ufdf0-\ufffd"""
     val name = """-.0-9\u00B7\u0300-\u036F\u203F-\u2040"""
 
+    //match tag name
     val nameReg = ("[" + startName + "][" + startName + name + "]*").r
 
+    //match attribute value surrounded by simple or double quote
+    val valueRegDoubleQuote = """[^"]*""".r
+    val valueRegSimpleQuote = """[^']*""".r
+
+    //match single or double quote
+    val quoteReg = """["']""".r
+
+    //match text node
     val textReg = """[^><]+""".r
 
-    val xml = text | node | minimizeNode
-
-    def text: Parser[scala.xml.Node] = textReg ^^ {
-      case s: String => new scala.xml.Text(s)
+    //transform list of attributes to nested attributes
+    def attrFromList(l: List[sxml.Attribute]): sxml.Attribute = {
+      l match {
+        case Nil => null
+        case h :: Nil => h
+        case h :: t => t.foldLeft(h)((r, a) => a.copy(r))
+      }
     }
 
-    def minimizeNode: Parser[scala.xml.Node] = '<'  ~> (nameReg <~ opt(' ') ~ '/' ~'>') ^^ {
-      case s: String => new scala.xml.Elem(
-        null, s, scala.xml.Null, scala.xml.TopScope, true
-      )
+    val xml = text | node | emptyNode
+
+    //match text node
+    def text: Parser[sxml.Node] = textReg ^^ {
+      case s: String => new sxml.Text(s)
     }
 
-    def startTag: Parser[String] = '<' ~> (nameReg <~ '>') ^^ {
-      case s: String => s
+    //match attribute
+    def attr: Parser[sxml.Attribute] = (nameReg <~ '=') ~ (quoteReg into {
+      case "\"" => valueRegDoubleQuote <~ "\""
+      case "'" => valueRegSimpleQuote <~ "'"
+    }) ^^ {
+      case n ~ v => sxml.Attribute(null, n, v, sxml.Null)
     }
 
+    //empty node <br />
+    def emptyNode: Parser[sxml.Node] = '<'  ~> (nameReg ~ opt(rep(attr)) <~ opt(' ') ~ '/' ~'>') ^^ {
+      case s ~ attr => {
+        val elem = sxml.Elem(null, s, sxml.Null, sxml.TopScope, true)
+        attr match {
+          case None => elem
+          case Some(l:List[_]) => elem % attrFromList(l)
+        }
+      }
+    }
+
+    //match start tag with attributes and return a Tuple2 with tag name and nested attributes
+    def startTag: Parser[(String, sxml.Attribute)] = '<' ~> (nameReg ~ opt(rep(attr)) <~ '>') ^^ {
+      case s ~ None => (s, null)
+      case s ~ Some(l:List[_]) => (s, attrFromList(l))
+    }
+
+    //match an end tag with a specific name
     def endTag(name: String): Parser[String] = '<' ~ '/' ~> (nameReg <~ '>') ^^ {
       case s: String if s == `name` => s
     }
 
-    def node: Parser[scala.xml.Node] = startTag into {
-      name => (rep(xml) ^^ {r => new XmlListHolder(r)}) <~ endTag(`name`) ^^ {
+    //match from start tag to similar end tag containing nested node
+    def node: Parser[sxml.Node] = startTag into {
+      t => (rep(xml) ^^ {r => new XmlListHolder(r)}) <~ endTag(t._1) ^^ {
         case x: XmlListHolder =>
-          new scala.xml.Elem(
-            null, `name`, scala.xml.Null, scala.xml.TopScope, true, x.list:_*
+          val res = sxml.Elem(
+            null, t._1, sxml.Null, sxml.TopScope, true, x.list:_*
           )
+          t._2 match {
+            case null => res
+            case _:sxml.Attribute => res % t._2
+          }
       }
     }
 
   }
 
   val parser = new XmlParser
-  val result = parser.parseAll(parser.xml, "<p>Hello <strong>wor<i>l</i></strong><em>d</em><br />!</p>")
+  val result = parser.parseAll(parser.xml,
+    """<p class="title" id="TheTitle'" style='margin-left:"20px"'>""" +
+    """Hello <strong>wor<i>l</i></strong><em>d</em><br id="TheBr" />!</p>"""
+  )
 
-  if (result.successful) result.get(0).child.foreach(println)
+  println(result)
 }
