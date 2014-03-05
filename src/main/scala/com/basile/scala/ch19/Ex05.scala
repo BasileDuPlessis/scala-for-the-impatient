@@ -71,7 +71,7 @@ object Ex05 extends App {
         val elem = sxml.Elem(null, s, sxml.Null, sxml.TopScope, true)
         attr match {
           case None => elem
-          case Some(l:List[_]) => elem % attrFromList(l)
+          case Some(l) => elem % attrFromList(l)
         }
       }
     }
