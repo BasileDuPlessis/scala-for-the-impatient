@@ -5,3 +5,6 @@
 *.cache
 .idea/
 target/
+crm/
+forum/
+resources/
