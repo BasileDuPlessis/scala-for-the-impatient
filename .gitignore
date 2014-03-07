@@ -3,8 +3,11 @@
 *.class
 *.history
 *.cache
+.gitignore
 .idea/
 target/
+build.sbt
 crm/
 forum/
 resources/
+doc/
