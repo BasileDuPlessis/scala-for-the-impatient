@@ -1,15 +1,17 @@
 package com.basile.scala.ch19
 
 import scala.util.parsing.combinator.RegexParsers
-
 /**
- * Add variables and assignment to the calculator program.
- * Variables are created when they are first used.
- * Uninitialized variables are zero.
- *
- * To print a value, assign it to the special variable out .
+ * Extend the preceding exercise into a parser for a programming language that has variable assignments,
+ * Boolean expressions, and if / else and while statements.
  */
-object Ex08 extends App {
+object Ex09 extends App {
+
+  class Expr
+  case class Number(value: Int) extends Expr
+  case class Variable(name: String, value: Int = 0) extends Expr
+  case class Operator(op: String, left: Expr, right: Expr) extends Expr
+  case class Condition(op: String, left: Expr, right: Expr) extends Expr
 
   class ExprParser extends RegexParsers {
 
@@ -47,15 +49,23 @@ object Ex08 extends App {
       case n ~ e => ValueMap.update(n, e)
     }
 
+    def condition: Parser[Boolean] = expr ~ (">" | "<") ~ expr ^^ {
+      case a ~ "<" ~ b => a < b
+      case a ~ ">" ~ b => a > b
+    }
+
+    def statement = ("while" <~ "(") ~ condition ~ (")" ~ "{" ~> language <~ "}") ^^ {
+      case "while" ~ c ~ l => while(c())
+    }
+
     //parse semicolon separated language
-    def language = rep(assign <~ ';')
+    def language = rep((assign <~ ';')
 
   }
 
   val parser = new ExprParser
 
   //should print 20 then 5
-  val result = parser.parseAll(parser.language, "a=3; b=(a+2)*4; out=b; b=b/4; out=b")
-
+  val result = parser.parseAll(parser.language, "while(a<10) { out=a; a=a+1; };")
 
 }
