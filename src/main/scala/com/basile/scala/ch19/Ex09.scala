@@ -1,71 +1,76 @@
 package com.basile.scala.ch19
 
-import scala.util.parsing.combinator.RegexParsers
+import scala.util.parsing.combinator.syntactical.StandardTokenParsers
+
 /**
  * Extend the preceding exercise into a parser for a programming language that has variable assignments,
  * Boolean expressions, and if / else and while statements.
  */
 object Ex09 extends App {
 
-  class Expr
+  class Expr {
+    def interpret {}
+  }
   case class Number(value: Int) extends Expr
-  case class Variable(name: String, value: Int = 0) extends Expr
+  case class Variable(name: String) extends Expr
   case class Operator(op: String, left: Expr, right: Expr) extends Expr
-  case class Condition(op: String, left: Expr, right: Expr) extends Expr
+  case class Assignment(left: Variable, right: Expr) extends Expr
+  case class Condition(op: String, left: Expr, right: Expr)
+  case class Statement(op: String, cond: Condition, expr: List[Expr]) extends Expr
 
-  class ExprParser extends RegexParsers {
+  class LanguageParser extends StandardTokenParsers {
 
-    //A Map to store variables values
-    val ValueMap = scala.collection.mutable.Map[String, Int]()
+    lexical.reserved += ("while", "if")
+    lexical.delimiters += (";", "=", "<", ">", "(", ")", "{", "}", "+", "-", "*", "/")
 
-    val number = "[0-9]+".r
-
-    //match variable name
-    val name = "[a-z]+".r
-
-    def expr: Parser[Int] = term ~ rep( ("+" | "-") ~ term ) ^^ {
+    def expr: Parser[Expr] = term ~ rep( ("+" | "-") ~ term ) ^^ {
       case t ~ l => l.foldLeft(t)(
         (res, e) => e match {
-          case "-" ~ n => res - n
-          case "+" ~ n => res + n
+          case "-" ~ n => Operator("-", res, n)
+          case "+" ~ n => Operator("+", res, n)
         }
       )
     }
 
-    def term: Parser[Int] = factor ~ opt(("/" | "*" | "%") ~ term) ^^ {
+    def term: Parser[Expr] = factor ~ opt(("/" | "*") ~ term) ^^ {
       case f ~ None => f
-      case f ~ Some("/" ~ e) => f / e
-      case f ~ Some("*" ~ e) => f * e
-      case f ~ Some("%" ~ e) => f % e
+      case f ~ Some("/" ~ e) => Operator("/", f, e)
+      case f ~ Some("*" ~ e) => Operator("*", f, e)
+      case f ~ Some("%" ~ e) => Operator("%", f, e)
     }
 
-    //a factor must be a number, variable or expression between ()
-    def factor: Parser[Int] =
-      number ^^ { _.toInt } | name ^^ { ValueMap.getOrElse(_, 0) } | "(" ~> expr <~ ")"
+    def factor: Parser[Expr] = numericLit ^^ { n => Number(n.toInt) } | ident ^^ {
+      n => Variable(n)
+    } | "(" ~> expr <~ ")"
 
-    //assign an expression to a variable
-    def assign = (name <~ "=") ~ expr ^^ {
-      case "out" ~ e => println(e)
-      case n ~ e => ValueMap.update(n, e)
+    def condition: Parser[Condition] = expr ~ "<" ~ expr ^^ {
+      case left ~ op ~ right => Condition(op, left, right)
     }
 
-    def condition: Parser[Boolean] = expr ~ (">" | "<") ~ expr ^^ {
-      case a ~ "<" ~ b => a < b
-      case a ~ ">" ~ b => a > b
+    def statement: Parser[Expr] = keyword("while") ~ "(" ~> (condition ~ (")" ~ "{" ~> language) <~ "}") ^^ {
+      case c ~ l => Statement("while", c, l)
     }
 
-    def statement = ("while" <~ "(") ~ condition ~ (")" ~ "{" ~> language <~ "}") ^^ {
-      case "while" ~ c ~ l => while(c())
+    def assign: Parser[Expr] = (ident <~ "=") ~ expr ^^ {
+      case i ~ e => Assignment(Variable(i), e)
     }
 
-    //parse semicolon separated language
-    def language = rep((assign <~ ';')
+    def language: Parser[List[Expr]] = rep((statement | assign) <~ ";") ^^ {
+      case l:List[Expr] => l
+    }
+
+    def parseAll(p: Parser[List[Expr]], in: String): ParseResult[List[Expr]] = phrase(p)(new lexical.Scanner(in))
 
   }
 
-  val parser = new ExprParser
+  object Interpreter {
+    def apply(l: List[Expr]) { l.foreach { e => e.interpret } }
+  }
 
-  //should print 20 then 5
+  val parser = new LanguageParser
+
   val result = parser.parseAll(parser.language, "while(a<10) { out=a; a=a+1; };")
+
+  Interpreter(result.get)
 
 }
