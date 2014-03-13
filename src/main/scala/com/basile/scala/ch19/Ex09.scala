@@ -8,19 +8,75 @@ import scala.util.parsing.combinator.syntactical.StandardTokenParsers
  */
 object Ex09 extends App {
 
-  class Expr {
-    def interpret {}
+  /*
+  Expression should provide a value
+   */
+  abstract class Expr {
+    def value: Int
   }
+
+  case class Variable(name: String) extends Expr {
+    var value: Int = 0
+  }
+  /*
+  Object to use in pattern matching in order to set and get instance of Variable
+   */
+  object NameOfVariable {
+    val varMap = scala.collection.mutable.Map[String, Variable]()
+    def unapply(s: String): Option[Variable] = Some(varMap.getOrElseUpdate(s, new Variable(s)))
+  }
+
   case class Number(value: Int) extends Expr
-  case class Variable(name: String) extends Expr
-  case class Operator(op: String, left: Expr, right: Expr) extends Expr
-  case class Assignment(left: Variable, right: Expr) extends Expr
-  case class Condition(op: String, left: Expr, right: Expr)
-  case class Statement(op: String, cond: Condition, expr: List[Expr]) extends Expr
+  case class Operator(op: String, left: Expr, right: Expr) extends Expr {
+    def value: Int = op match {
+      case "+" => left.value + right.value
+      case "-" => left.value - right.value
+      case "*" => left.value * right.value
+      case "/" => left.value / right.value
+    }
+  }
+
+  /*
+  Boolean Expressions should provide a boolean to get used in Statement
+   */
+  abstract class BooleanExpr {
+    def value: Boolean
+  }
+  case class Condition(op: String, left: Expr, right: Expr) extends BooleanExpr {
+    def value: Boolean = op match {
+      case "<" => left.value < right.value
+      case ">" => left.value > right.value
+      case ">=" => left.value >= right.value
+      case "<=" => left.value <= right.value
+    }
+  }
+
+  /*
+  Command should be interpreted
+   */
+  abstract class Cmd {
+    def interpret: Unit
+  }
+  case class Assignment(left: Variable, right: Expr) extends Cmd {
+    def interpret {
+      left match {
+        case Variable("out") => println(right.value)
+        case _ => left.value = right.value
+      }
+    }
+  }
+  case class Statement(op: String, cond: BooleanExpr, expr1: List[Cmd], expr2: List[Cmd] = Nil) extends Cmd {
+    def interpret {
+      op match {
+        case "while" => while(cond.value) expr1.foreach(_.interpret)
+        case "if" => if(cond.value) expr1.foreach(_.interpret) else expr2.foreach(_.interpret)
+      }
+    }
+  }
 
   class LanguageParser extends StandardTokenParsers {
 
-    lexical.reserved += ("while", "if")
+    lexical.reserved += ("while", "if", "else")
     lexical.delimiters += (";", "=", "<", ">", "(", ")", "{", "}", "+", "-", "*", "/")
 
     def expr: Parser[Expr] = term ~ rep( ("+" | "-") ~ term ) ^^ {
@@ -40,37 +96,35 @@ object Ex09 extends App {
     }
 
     def factor: Parser[Expr] = numericLit ^^ { n => Number(n.toInt) } | ident ^^ {
-      n => Variable(n)
+      case NameOfVariable(v) => v
     } | "(" ~> expr <~ ")"
 
-    def condition: Parser[Condition] = expr ~ "<" ~ expr ^^ {
+    def condition: Parser[BooleanExpr] = expr ~ ("<" | ">") ~ expr ^^ {
       case left ~ op ~ right => Condition(op, left, right)
     }
 
-    def statement: Parser[Expr] = keyword("while") ~ "(" ~> (condition ~ (")" ~ "{" ~> language) <~ "}") ^^ {
-      case c ~ l => Statement("while", c, l)
+    def statement: Parser[Cmd] =
+      ((("while" | "if") <~ "(") ~ (condition <~ ")") ~ ("{" ~> cmd <~ "}")
+        ~ opt( "else" ~> "{" ~> cmd <~ "}" )) ^^ {
+          case "while" ~ c ~ l ~ None => Statement("while", c, l)
+          case "if" ~ c ~ l ~ Some(e) => Statement("if", c, l, e)
+        }
+
+    def assignment: Parser[Cmd] = (ident <~ "=") ~ expr ^^ {
+      case NameOfVariable(v) ~ e => Assignment(v, e)
     }
 
-    def assign: Parser[Expr] = (ident <~ "=") ~ expr ^^ {
-      case i ~ e => Assignment(Variable(i), e)
-    }
+    def cmd: Parser[List[Cmd]] = rep((statement | assignment) <~ ";")
 
-    def language: Parser[List[Expr]] = rep((statement | assign) <~ ";") ^^ {
-      case l:List[Expr] => l
-    }
+    def parseAll(p: Parser[List[Cmd]], in: String): ParseResult[List[Cmd]] = phrase(p)(new lexical.Scanner(in))
 
-    def parseAll(p: Parser[List[Expr]], in: String): ParseResult[List[Expr]] = phrase(p)(new lexical.Scanner(in))
-
-  }
-
-  object Interpreter {
-    def apply(l: List[Expr]) { l.foreach { e => e.interpret } }
   }
 
   val parser = new LanguageParser
 
-  val result = parser.parseAll(parser.language, "while(a<10) { out=a; a=a+1; };")
+  val result = parser.parseAll(parser.cmd, "while(a<100) { if (a>9) {a=a+10;} else {a=a+1;}; out=a; };")
 
-  Interpreter(result.get)
+  //should print 1 2 3 4 5 6 7 8 9 10 20 30 40 50 60 70 80 90 100
+  result.get.foreach(_.interpret)
 
 }
