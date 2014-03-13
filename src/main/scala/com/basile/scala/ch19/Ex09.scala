@@ -18,8 +18,9 @@ object Ex09 extends App {
   case class Variable(name: String) extends Expr {
     var value: Int = 0
   }
-  /*
-  Object to use in pattern matching in order to set and get instance of Variable
+
+  /**
+   * Object to use in pattern matching in order to set and get instance of Variable
    */
   object NameOfVariable {
     val varMap = scala.collection.mutable.Map[String, Variable]()
