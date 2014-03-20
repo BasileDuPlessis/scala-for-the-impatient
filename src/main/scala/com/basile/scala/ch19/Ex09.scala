@@ -108,6 +108,7 @@ object Ex09 extends App {
       ((("while" | "if") <~ "(") ~ (condition <~ ")") ~ ("{" ~> cmd <~ "}")
         ~ opt( "else" ~> "{" ~> cmd <~ "}" )) ^^ {
           case "while" ~ c ~ l ~ None => Statement("while", c, l)
+          case "if" ~ c ~ l ~ None => Statement("if", c, l)
           case "if" ~ c ~ l ~ Some(e) => Statement("if", c, l, e)
         }
 

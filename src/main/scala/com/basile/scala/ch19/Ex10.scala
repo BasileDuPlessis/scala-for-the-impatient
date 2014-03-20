@@ -1,6 +1,7 @@
 package com.basile.scala.ch19
 
 import scala.util.parsing.combinator.syntactical.StandardTokenParsers
+import scala.collection.mutable.{Map => MutableMap}
 
 /**
  * Add function definitions to the programming language of the preceding exercise.
@@ -59,6 +60,7 @@ object Ex10 extends App {
       ((("while" | "if") <~ "(") ~ (condition <~ ")") ~ ("{" ~> cmd <~ "}")
         ~ opt( "else" ~> "{" ~> cmd <~ "}" )) ^^ {
         case "while" ~ c ~ l ~ None => Statement("while", c, l)
+        case "if" ~ c ~ l ~ None => Statement("if", c, l)
         case "if" ~ c ~ l ~ Some(e) => Statement("if", c, l, e)
       }
 
@@ -66,28 +68,33 @@ object Ex10 extends App {
       case v ~ e => Assignment(Variable(v), e)
     }
 
-    def function: Parser[Cmd] = "def" ~> ident ~ "(" ~ repsep(ident, ",") ~ ")" ~ "{" ~ cmdInFunction ~ "}" ^^ {
+    def function: Parser[Cmd] = "def" ~> ident ~ "(" ~ repsep(ident, ",") ~ ")" ~ "{" ~ cmd ~ "}" ^^ {
       case n ~ "(" ~ a ~ ")" ~ "{" ~ c ~ "}" => Function(n, a, c)
     }
 
     def functionReturn: Parser[Cmd] = "return" ~> expr ^^ {FunctionReturn(_)}
 
 
-    def cmd: Parser[List[Cmd]] = rep( (statement | assignment | function) <~ ";" )
-
-    def cmdInFunction: Parser[List[Cmd]] = rep( (statement | assignment | functionReturn) <~ ";" )
+    def cmd: Parser[List[Cmd]] = rep( (statement | assignment | function | functionReturn) <~ ";" )
 
     def parseAll(p: Parser[List[Cmd]], in: String): ParseResult[List[Cmd]] = phrase(p)(new lexical.Scanner(in))
 
   }
 
 
-  class Interpreter(val defaultVarMap: Map[String, Int] = Map[String, Int]()) {
+  class Interpreter {
 
-    import scala.collection.mutable.{Map => MutableMap}
-
-    val varMap = MutableMap[String, Int]() ++ defaultVarMap
+    val varMap = MutableMap[String, Int]()
     val fctMap = MutableMap[String, Function]()
+
+    def this(defaultVarMap: Map[String, Int], defaultFctMap: Map[String, Function]) {
+      this()
+      varMap ++= defaultVarMap
+      fctMap ++= defaultFctMap
+    }
+
+    class ReturnException(val value: Int) extends Exception
+
 
     def valueOfExpr(expr: Expr): Int = {
       expr match {
@@ -100,10 +107,11 @@ object Ex10 extends App {
         case FunctionCall(n, p) => fctMap.get(n) match {
           case None => 0
           case Some(f) =>
-            val m = Map(f.params.zip(p.map(valueOfExpr)).toArray:_*)
-            (new Interpreter(m)).execute(f.cmd) match {
-              case None => 0
-              case Some(i) => i
+            try {
+              (new Interpreter(Map(f.params.zip(p.map(valueOfExpr)).toArray: _*), fctMap.toMap)).execute(f.cmd)
+              0
+            } catch {
+              case e:ReturnException => e.value
             }
         }
       }
@@ -112,36 +120,52 @@ object Ex10 extends App {
     def valueOfCond(cond: BooleanExpr): Boolean = {
       cond match {
         case Condition("<", l, r) => valueOfExpr(l) < valueOfExpr(r)
+        case Condition(">", l, r) => valueOfExpr(l) > valueOfExpr(r)
+        case Condition(">=", l, r) => valueOfExpr(l) >= valueOfExpr(r)
+        case Condition("<=", l, r) => valueOfExpr(l) <= valueOfExpr(r)
       }
     }
 
-    def execute(cmd: List[Cmd]): Option[Int] = {
-      var out: Option[Int] = None
-      cmd.foreach{
+    def execute(cmd: List[Cmd]) {
+      cmd.foreach {
         c => c match {
           case Statement(op, cond, cmd1, cmd2) => op match {
-            case "while" => while(valueOfCond(cond)) execute(cmd1)
-            case "if" => if(valueOfCond(cond)) execute(cmd1) else execute(cmd2)
+            case "while" => while (valueOfCond(cond)) execute(cmd1)
+            case "if" => if (valueOfCond(cond)) execute(cmd1) else execute(cmd2)
           }
           case Assignment(v, e) => v match {
             case Variable("out") => println(valueOfExpr(e))
             case Variable(n) => varMap.update(n, valueOfExpr(e))
-
           }
-          case f:Function => fctMap.update(f.name, f)
-          case FunctionReturn(e) => out = Some(valueOfExpr(e))
+          case f: Function => fctMap.update(f.name, f)
+          case FunctionReturn(e) => throw new ReturnException(valueOfExpr(e))
         }
       }
-      out
     }
+
   }
 
 
   val parser = new LanguageParser
 
-  val result = parser.parseAll(parser.cmd, "def multiply(a,b) {return a*b;}; out=multiply(3,4);")
+  val result = parser.parseAll(parser.cmd,
+    """
+    def fact(n) {
+      if (n>0) {
+        return n*fact(n-1);
+      } else {
+        return 1;
+      };
+    };
+    n=1;
+    while(n<10) {
+      out=fact(n);
+      n=n+1;
+    };
+    """
+  )
 
-  val myInterpreter = new Interpreter
+  val myInterpreter = new Interpreter()
 
   myInterpreter.execute(result.get)
 
