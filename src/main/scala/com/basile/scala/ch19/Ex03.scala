@@ -11,8 +11,8 @@ object Ex03 extends App {
 
     val number = "-?[0-9]+".r
 
-    val elem: Parser[List[Int]] = "(" ~> rep(number <~ ("," | ")")) ^^ {
-      case l: List[String] => l.map(_.toInt)
+    val elem: Parser[List[Int]] = "(" ~> repsep(number, ",") <~ ")" ^^ {
+      case l  => l.map(_.toInt)
     }
 
   }
