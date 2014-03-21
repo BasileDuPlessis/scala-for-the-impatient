@@ -134,7 +134,7 @@ object Ex10 extends App {
             try {
               /*
               Function are called in a new instance of interpreter (new scope)
-              Parameters and defined function are sent to this new instance
+              Parameters and predefined functions are sent to this new instance
                */
               (new Interpreter(Map(f.params.zip(p.map(valueOfExpr)).toArray: _*), fctMap.toMap)).execute(f.cmd)
               //function without return statement return 0
@@ -189,9 +189,9 @@ object Ex10 extends App {
         return 1;
       }
     }
-    n=1;
-    while(n<10) {
-      out=fact(n);
+    n=0;
+    while(n<9) {
+      out=fact(n+1);
       n=n+1;
     }
     """
