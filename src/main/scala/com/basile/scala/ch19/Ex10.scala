@@ -105,11 +105,15 @@ object Ex10 extends App {
     //fctMap contain function defined in the scope
     val fctMap = MutableMap[String, Function]()
 
+    //scope is an instance or Interpreter, default is instance itself
+    var scope: Interpreter = this
+
     //Auxiliary constructor receive parameters for function call and functions list
-    def this(defaultVarMap: Map[String, Int], defaultFctMap: Map[String, Function]) {
+    def this(defaultVarMap: Map[String, Int], scope: Interpreter) {
       this()
       varMap ++= defaultVarMap
-      fctMap ++= defaultFctMap
+      fctMap ++= scope.fctMap
+      this.scope = scope
     }
 
     /** handle return statement
@@ -134,12 +138,13 @@ object Ex10 extends App {
             try {
               /*
               Function are called in a new instance of interpreter (new scope)
-              Parameters and predefined functions are sent to this new instance
+              Calling parameters and scope are sent to this new instance
                */
-              (new Interpreter(Map(f.params.zip(p.map(valueOfExpr)).toArray: _*), fctMap.toMap)).execute(f.cmd)
+              (new Interpreter(Map(f.params.zip(p.map(valueOfExpr)).toArray: _*), scope)).execute(f.cmd)
               //function without return statement return 0
               0
             } catch {
+              //Exception ReturnException handle return statement
               case e:ReturnException => e.value
             }
         }
