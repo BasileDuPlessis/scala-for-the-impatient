@@ -6,14 +6,14 @@ import scala.io.Source
 import scala.util.matching.Regex
 
 /**
- * Write a program that counts how many words match a given regular expression in all files of all subdirectories
- * of a given directory. Have one actor per file, one actor that traverses the subdirectories,
- * and one actor to accumulate the results.
+ * Modify the program of the preceding exercise to display all matching words.
  */
-object Ex03 extends App {
+object Ex04 extends App {
+
   val now = System.nanoTime
+
   case class CrawledFiles(n: Int)
-  case class CountValue(n: Int)
+  case class MatchResult(l: List[String])
 
   class CrawlDirActor(filter: (File) => Boolean, apply: (File) => Unit, continuation: Actor) extends Actor {
 
@@ -44,12 +44,34 @@ object Ex03 extends App {
     }
   }
 
-  class CountWordActor(continuation: Actor, reg: Regex) extends Actor {
+  class CountWordActor(reg: Regex) extends Actor {
     def act {
       react {
-          case f: File => continuation ! CountValue(
-            reg.findAllIn(Source.fromFile(f, "ISO-8859-1").getLines.mkString).size
-          )
+        case ( f: File, continuation: Actor ) =>
+          continuation ! MatchResult(reg.findAllIn(Source.fromFile(f, "ISO-8859-1").getLines.mkString).toList)
+      }
+    }
+  }
+
+  class DisplayMatchResultActor(continuation: Actor) extends Actor {
+    val wordSet = scala.collection.mutable.SortedSet[String]()
+    var count = 0
+    var totalCount = 0
+    def act {
+      loop {
+        react {
+          case mr @ MatchResult(l) => {
+            count += 1
+            wordSet ++= l
+            continuation ! mr
+            if ( totalCount == count ) {
+              wordSet.foreach(println)
+              exit()
+            }
+          }
+          case CrawledFiles(0) => exit()
+          case cf @ CrawledFiles(n) => totalCount = n; continuation ! cf
+        }
       }
     }
   }
@@ -61,19 +83,17 @@ object Ex03 extends App {
     def act {
       loop {
         react {
-          case CountValue(n) => {
+          case MatchResult(l) => {
             count += 1
-            sum += n
+            sum += l.size
             if ( totalCount == count ) {
               println(sum + " matches in " + count + " files")
               println("AccumulateCounts : %d milliseconds".format((System.nanoTime - now) / 1000000))
               exit()
             }
           }
-          case CrawledFiles(n) => {
-            totalCount = n
-            if ( count == 0 ) exit()
-          }
+          case CrawledFiles(0) => exit()
+          case CrawledFiles(n) => totalCount = n
         }
       }
     }
@@ -84,10 +104,14 @@ object Ex03 extends App {
   val acc = new AccumulateCounts
   acc.start()
 
+  val display = new DisplayMatchResultActor(acc)
+  display.start()
+
+
   val crawl = new CrawlDirActor(
     (f:File) =>  f.toString.endsWith(".htm"),
-    (f:File) =>  (new CountWordActor(acc, reg)).start ! f,
-    acc
+    (f:File) =>  (new CountWordActor(reg)).start ! (f, display),
+    display
   )
   crawl.start()
 
