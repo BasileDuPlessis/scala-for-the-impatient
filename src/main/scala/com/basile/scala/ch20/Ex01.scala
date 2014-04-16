@@ -21,7 +21,7 @@ object Ex01 extends App {
     def act {
       while (true) {
         receive {
-          case (a: Array[Int], i: Int) => {
+          case a: Array[Int] => {
             averageActor ! a.sum / partSize
             exit()
           }
@@ -60,7 +60,7 @@ object Ex01 extends App {
 
 
   (0 until nbParts).foreach { i =>
-    (new SumActor(myAverageActor)).start ! (rands.slice(i*partSize, (i+1)*partSize), i)
+    (new SumActor(myAverageActor)).start ! rands.slice(i*partSize, (i+1)*partSize)
   }
 
   /*
