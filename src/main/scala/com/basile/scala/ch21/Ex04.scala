@@ -25,7 +25,7 @@ object Ex04 extends App {
   type Reader = Read.type
 
   trait LoggerComponent {
-    def log(msg:String) {println(msg)}
+    def log(msg:String)
   }
 
   class FluentReader(reader: Reader) {
@@ -49,7 +49,9 @@ object Ex04 extends App {
         def and(at: aType): FluentAsk = in(at)
   }
 
-  implicit def reader2FluentReader(reader: Reader): FluentReader = new FluentReader(reader) with LoggerComponent
+  implicit def reader2FluentReader(reader: Reader): FluentReader = new FluentReader(reader) with LoggerComponent {
+    def log (msg: String) {println(msg)}
+  }
 
 
   Read in aString askingFor "Your name" and anInt askingFor "Your age" and aDouble askingFor "Your weight"
