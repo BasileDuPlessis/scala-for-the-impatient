@@ -17,4 +17,6 @@ object Ex01 extends App {
     }
   }
 
+  assert( Conversions.inchesToCentimeters(2) == 5.08)
+
 }
