@@ -1,10 +1,11 @@
 package com.basile.scala.ch13
 
+import scala.collection.mutable.LinkedList
+
 /**
- * Created by basile.duplessis on 10/01/14.
+ * Write a function that removes all zeroes from a linked list of integers.
  */
 object Ex03 extends App {
-  import scala.collection.mutable.LinkedList
 
   def rmZeroes(l: LinkedList[Int]) {
     l match {
