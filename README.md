@@ -1,7 +1,8 @@
-scala-for-the-impatient
+Scala for the impatient answers
 =======================
 
 My solutions for "Scala for the Impatient" exercises
+
 
 #### Table of Contents
 
