@@ -80,9 +80,30 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [10. Import java.awt.datatransfer._ and make an object of type SystemFlavorMap with the call Click here to view code image val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf\[SystemFlavorMap\] Then call the getNativesForFlavor method with parameter DataFlavor.imageFlavor and get the return value as a Scala buffer. (Why this obscure class? It’s hard to find uses of java.util.List in the standard Java library.)](src/main/scala/com/basile/scala/ch03/Ex10.scala)
 
-##### Maps and Tuples (A1)
+##### Chapter 4
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch04
+[Maps and Tuples (A1)](src/main/scala/com/basile/scala/ch04)
+
+[1. Set up a map of prices for a number of gizmos that you covet. Then produce a second map with the same keys and the prices at a 10 percent discount.](src/main/scala/com/basile/scala/ch04/Ex01.scala)
+
+[2. Write a program that reads words from a file. Use a mutable map to count how often each word appears. To read the words, simply use a java.util.Scanner : val in = new java.util.Scanner(new java.io.File("myfile.txt")) while (in.hasNext()) process in.next() Or look at Chapter 9 for a Scalaesque way. At the end, print out all words and their counts.](src/main/scala/com/basile/scala/ch04/Ex02.scala)
+
+[3. Repeat the preceding exercise with an immutable map.](src/main/scala/com/basile/scala/ch04/Ex03.scala)
+
+[4. Repeat the preceding exercise with a sorted map, so that the words are printed in sorted order.](src/main/scala/com/basile/scala/ch04/Ex04.scala)
+
+[5. Repeat the preceding exercise with a java.util.TreeMap that you adapt to the Scala API.](src/main/scala/com/basile/scala/ch04/Ex05.scala)
+
+[6. Define a linked hash map that maps "Monday" to java.util.Calendar.MONDAY , and similarly for the other weekdays. Demonstrate that the elements are visited in insertion order.](src/main/scala/com/basile/scala/ch04/Ex06.scala)
+
+[7. Print a table of all Java properties, like this: java.runtime.name | Java(TM) SE Runtime Environment sun.boot.library.path | /home/apps/jdk1.6.0_21/jre/lib/i386 java.vm.version | 17.0-b16 java.vm.vendor | Sun Microsystems Inc. java.vendor.url | http://java.sun.com/ path.separator | : java.vm.name | Java HotSpot(TM) Server VM You need to find the length of the longest key before you can print the table.](src/main/scala/com/basile/scala/ch04/Ex07.scala)
+
+[8. Write a function minmax(values: Array\[Int\]) that returns a pair containing the smallest and largest values in the array.](src/main/scala/com/basile/scala/ch04/Ex08.scala)
+
+[9. Write a function lteqgt(values: Array\[Int\], v: Int) that returns a triple containing the counts of values less than v , equal to v , and greater than v .](src/main/scala/com/basile/scala/ch04/Ex09.scala)
+
+[10. What happens when you zip together two strings, such as "Hello".zip("World") ? Come up with a plausible use case.](src/main/scala/com/basile/scala/ch04/Ex10.scala)
+
 
 ##### Classes (A1)
 
