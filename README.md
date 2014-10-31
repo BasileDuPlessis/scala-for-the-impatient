@@ -56,9 +56,29 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [10. Write a function that computes x n , where n is an integer. Use the following recursive definition: • x n = y 2 if n is even and positive, where y = x n / 2 . • x n = x· x n – 1 if n is odd and positive. • x 0 = 1. • x n = 1 / x – n if n is negative. Don’t use a return statement.](src/main/scala/com/basile/scala/ch02/Ex10.scala)
 
-##### Arrays (A1)
+##### Chapter 3
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch03
+[Arrays (A1)](src/main/scala/com/basile/scala/ch03)
+
+[1. Write a code snippet that sets a to an array of n random integers between 0 (inclusive) and n (exclusive).](src/main/scala/com/basile/scala/ch03/Ex01.scala)
+
+[2. Write a loop that swaps adjacent elements of an array of integers. For example, Array(1, 2, 3, 4, 5) becomes Array(2, 1, 4, 3, 5) .](src/main/scala/com/basile/scala/ch03/Ex02.scala)
+
+[3. Repeat the preceding assignment, but produce a new array with the swapped values. Use for / yield .](src/main/scala/com/basile/scala/ch03/Ex03.scala)
+
+[4. Given an array of integers, produce a new array that contains all positive values of the original array, in their original order, followed by all values that are zero or negative, in their original order.](src/main/scala/com/basile/scala/ch03/Ex04.scala)
+
+[5. How do you compute the average of an Array\[Double\] ?](src/main/scala/com/basile/scala/ch03/Ex05.scala)
+
+[6. How do you rearrange the elements of an Array\[Int\] so that they appear in reverse sorted order? How do you do the same with an ArrayBuffer\[Int\] ?](src/main/scala/com/basile/scala/ch03/Ex06.scala)
+
+[7. Write a code snippet that produces all values from an array with duplicates removed. (Hint: Look at Scaladoc.)](src/main/scala/com/basile/scala/ch03/Ex07.scala)
+
+[8. Rewrite the example at the end of Section 3.4 , “ Transforming Arrays ,” on page 32 . Collect indexes of the negative elements, reverse the sequence, drop the last index, and call a.remove(i) for each index. Compare the efficiency of this approach with the two approaches in Section 3.4 .](src/main/scala/com/basile/scala/ch03/Ex08.scala)
+
+[9. Make a collection of all time zones returned by java.util.TimeZone.getAvailableIDs that are in America. Strip off the "America/" prefix and sort the result.](src/main/scala/com/basile/scala/ch03/Ex09.scala)
+
+[10. Import java.awt.datatransfer._ and make an object of type SystemFlavorMap with the call Click here to view code image val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf\[SystemFlavorMap\] Then call the getNativesForFlavor method with parameter DataFlavor.imageFlavor and get the return value as a Scala buffer. (Why this obscure class? It’s hard to find uses of java.util.List in the standard Java library.)](src/main/scala/com/basile/scala/ch03/Ex10.scala)
 
 ##### Maps and Tuples (A1)
 
