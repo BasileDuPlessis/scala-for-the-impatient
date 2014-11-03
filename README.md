@@ -172,7 +172,7 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [9. Write a program that imports the java.lang.System class, reads the user name from the user.name system property, reads a password from the Console object, and prints a message to the standard error stream if the password is not "secret" . Otherwise, print a greeting to the standard output stream. Do not use any other imports, and do not use any qualified names (with dots).](src/main/scala/com/basile/scala/ch07/Ex09.scala)
 
-[10. Apart from StringBuilder , what other members of java.lang does the scala package override?](src/main/scala/com/basile/scala/ch07/Ex10.scala)
+10. Apart from StringBuilder , what other members of java.lang does the scala package override?
 
 ##### Inheritance (A1)
 
