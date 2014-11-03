@@ -130,13 +130,49 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 [10. Consider the class class Employee(val name: String, var salary: Double) { def this() { this("John Q. Public", 0.0) } } Rewrite it to use explicit fields and a default primary constructor. Which form do you prefer? Why?](src/main/scala/com/basile/scala/ch05/Ex10.scala)
 
 
-##### Objects (A1)
+##### Chapter 6
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch06
+[Objects (A1)](src/main/scala/com/basile/scala/ch06)
 
-##### Packages and Imports (A1)
+[1. Write an object Conversions with methods inchesToCentimeters , gallonsToLiters , and milesToKilometers .](src/main/scala/com/basile/scala/ch06/Ex01.scala)
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch07
+[2. The preceding problem wasn’t very object-oriented. Provide a general superclass UnitConversion and define objects InchesToCentimeters , GallonsToLiters , and MilesToKilometers that extend it.](src/main/scala/com/basile/scala/ch06/Ex02.scala)
+
+[3. Define an Origin object that extends java.awt.Point . Why is this not actually a good idea? (Have a close look at the methods of the Point class.)](src/main/scala/com/basile/scala/ch06/Ex03.scala)
+
+[4. Define a Point class with a companion object so that you can construct Point instances as Point(3, 4) , without using new .](src/main/scala/com/basile/scala/ch06/Ex04.scala)
+
+[5. Write a Scala application, using the App trait, that prints the command-line arguments in reverse order, separated by spaces. For example, scala Reverse Hello World should print World Hello .](src/main/scala/com/basile/scala/ch06/Ex05.scala)
+
+[6. Write an enumeration describing the four playing card suits so that the toString method returns ♣, ♦, ♥, or ♠.](src/main/scala/com/basile/scala/ch06/Ex06.scala)
+
+[7. Implement a function that checks whether a card suit value from the preceding exercise is red.](src/main/scala/com/basile/scala/ch06/Ex07.scala)
+
+[8. Write an enumeration describing the eight corners of the RGB color cube. As IDs, use the color values (for example, 0xff0000 for Red ).](src/main/scala/com/basile/scala/ch06/Ex08.scala)
+
+##### Chapter 7
+
+[Packages and Imports (A1)](src/main/scala/com/basile/scala/ch07)
+
+[1. Write an example program to demonstrate that package com.horstmann.impatient is not the same as package com package horstmann package impatient](src/main/scala/com/basile/scala/ch07/Ex01.scala)
+
+[2. Write a puzzler that baffles your Scala friends, using a package com that isn’t at the top level.](src/main/scala/com/basile/scala/ch07/Ex02.scala)
+
+[3. Write a package random with functions nextInt(): Int , nextDouble(): Double , and setSeed(seed: Int): Unit . To generate random numbers, use the linear congruential generator next = (previous × a + b ) mod 2 n , where a = 1664525, b = 1013904223, n = 32, and the inital value of previous is seed .](src/main/scala/com/basile/scala/ch07/Ex03.scala)
+
+[4. Why do you think the Scala language designers provided the package object syntax instead of simply letting you add functions and variables to a package?](src/main/scala/com/basile/scala/ch07/Ex04.scala)
+
+[5. What is the meaning of private\[com\] def giveRaise(rate: Double) ? Is it useful?](src/main/scala/com/basile/scala/ch07/Ex05.scala)
+
+[6. Write a program that copies all elements from a Java hash map into a Scala hash map. Use imports to rename both classes.](src/main/scala/com/basile/scala/ch07/Ex06.scala)
+
+[7. In the preceding exercise, move all imports into the innermost scope possible.](src/main/scala/com/basile/scala/ch07/Ex07.scala)
+
+[8. What is the effect of import java._ import javax._ Is this a good idea?](src/main/scala/com/basile/scala/ch07/Ex08.scala)
+
+[9. Write a program that imports the java.lang.System class, reads the user name from the user.name system property, reads a password from the Console object, and prints a message to the standard error stream if the password is not "secret" . Otherwise, print a greeting to the standard output stream. Do not use any other imports, and do not use any qualified names (with dots).](src/main/scala/com/basile/scala/ch07/Ex09.scala)
+
+[10. Apart from StringBuilder , what other members of java.lang does the scala package override?](src/main/scala/com/basile/scala/ch07/Ex10.scala)
 
 ##### Inheritance (A1)
 
