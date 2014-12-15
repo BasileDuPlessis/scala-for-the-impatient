@@ -16,6 +16,7 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 [Objects (A1)](src/main/scala/com/basile/scala/ch06)
 [Packages and Imports (A1)](src/main/scala/com/basile/scala/ch07)
 [Inheritance (A1)](src/main/scala/com/basile/scala/ch08)
+[Files and Regular Expressions (A1))](src/main/scala/com/basile/scala/ch09)
 
 
 ##### Chapter 1
@@ -212,16 +213,26 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [Files and Regular Expressions (A1))](src/main/scala/com/basile/scala/ch09)
 
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
-[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[Write a Scala code snippet that reverses the lines in a file (making the last line the first one, and so on).](src/main/scala/com/basile/scala/ch09/Ex01.scala)
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch09
+[Write a Scala program that reads a file with tabs, replaces each tab with spaces so that tab stops are at n -column boundaries, and writes the result to the same file.](src/main/scala/com/basile/scala/ch09/Ex02.scala)
+
+[Write a Scala code snippet that reads a file and prints all words with more than 12 characters to the console. Extra credit if you can do this in a single line.](src/main/scala/com/basile/scala/ch09/Ex03.scala)
+
+[Write a Scala program that reads a text file containing average, maximum, and minimum of the numbers in the file.](src/main/scala/com/basile/scala/ch09/Ex04.scala)
+
+[Write a Scala program that writes the powers of 2 and their reciprocals to a file, with the exponent ranging from 0 to 20. Line up the columns: 1 1 2 0.5 4 0.25 ... ...](src/main/scala/com/basile/scala/ch09/Ex05.scala)
+
+[Make a regular expression searching for quoted strings "like this, maybe with \" or \\" in a Java or C++ program. Write a Scala program that prints out all such strings in a source file.](src/main/scala/com/basile/scala/ch09/Ex06.scala)
+
+[Write a Scala program that reads a text file and prints all tokens in the file that are not floating-point numbers. Use a regular expression.](src/main/scala/com/basile/scala/ch09/Ex07.scala)
+
+[ Write a Scala program that prints the src attributes of all img tags of a web page. Use regular expressions and groups.](src/main/scala/com/basile/scala/ch09/Ex08.scala)
+
+[Write a Scala program that counts how many files with .class extension are in a given directory and its subdirectories.](src/main/scala/com/basile/scala/ch09/Ex09.scala)
+
+[Expand the example with the serializable Person class that stores a collection of friends. Construct a few Person objects, make some of them friends of another, and then save an Array\[Person\] to a file. Read the array back in and verify that the friend relations are intact.](src/main/scala/com/basile/scala/ch09/Ex10.scala)
+
 
 ##### Traits (L1)
 
