@@ -8,6 +8,16 @@ My solutions for "Scala for the Impatient" exercises
 
 The [AL][1-3] refer to Martin Odersky's Scala levels.
 
+[The Basics (A1)](src/main/scala/com/basile/scala/ch01)
+[Control Structures and Functions (A1)](src/main/scala/com/basile/scala/ch02)
+[Arrays (A1)](src/main/scala/com/basile/scala/ch03)
+[Maps and Tuples (A1)](src/main/scala/com/basile/scala/ch04)
+[Classes (A1)](src/main/scala/com/basile/scala/ch05)
+[Objects (A1)](src/main/scala/com/basile/scala/ch06)
+[Packages and Imports (A1)](src/main/scala/com/basile/scala/ch07)
+[Inheritance (A1)](src/main/scala/com/basile/scala/ch08)
+
+
 ##### Chapter 1
 
 [The Basics (A1)](src/main/scala/com/basile/scala/ch01)
@@ -198,7 +208,18 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [The file scala/collection/immutable/Stack.scala contains the definition class Stack\[A\] protected (protected val elems: List\[A\]) Explain the meanings of the protected keywords. (Hint: Review the discussion of private constructors in Chapter 5.)](src/main/scala/com/basile/scala/ch08/Ex10.scala)
 
-##### Files and Regular Expressions (A1)
+##### Chapter 9
+
+[Files and Regular Expressions (A1))](src/main/scala/com/basile/scala/ch09)
+
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
+[](src/main/scala/com/basile/scala/ch09/Ex.scala)
 
 https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch09
 
