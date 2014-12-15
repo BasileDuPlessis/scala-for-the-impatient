@@ -172,11 +172,31 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [9. Write a program that imports the java.lang.System class, reads the user name from the user.name system property, reads a password from the Console object, and prints a message to the standard error stream if the password is not "secret" . Otherwise, print a greeting to the standard output stream. Do not use any other imports, and do not use any qualified names (with dots).](src/main/scala/com/basile/scala/ch07/Ex09.scala)
 
-10. Apart from StringBuilder , what other members of java.lang does the scala package override?
+[10. Apart from StringBuilder , what other members of java.lang does the scala package override?](src/main/scala/com/basile/scala/ch07/Ex10.scala)
 
-##### Inheritance (A1)
+##### Chapter 8
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch08
+[Inheritance (A1)](src/main/scala/com/basile/scala/ch08)
+
+[Extend the following BankAccount class to a CheckingAccount class that charges $1 for every deposit and withdrawal.](src/main/scala/com/basile/scala/ch08/Ex01.scala)
+
+[Extend the BankAccount class of the preceding exercise into a class SavingsAccount that earns interest every month (when a method earnMonthlyInterest is called) and has three free deposits or withdrawals every month. Reset the transaction count in the earnMonthlyInterest method.](src/main/scala/com/basile/scala/ch08/Ex02.scala)
+
+[Consult your favorite Java or C++ textbook that is sure to have an example of a toy inheritance hierarchy, perhaps involving employees, pets, graphical shapes, or the like.](src/main/scala/com/basile/scala/ch08/Ex03.scala)
+
+[Define an abstract class Item with methods price and description . A SimpleItem is an item whose price and description are specified in the constructor. Take advantage of the fact that a val can override a def . A Bundle is an item that contains other items. Its price is the sum of the prices in the bundle. Also provide a mechanism for adding items to the bundle and a suitable description method.](src/main/scala/com/basile/scala/ch08/Ex04.scala)
+
+[Design a class Point whose x and y coordinate values can be provided in a constructor. Provide a subclass LabeledPoint whose constructor takes a label value and x and y coordinates, such as new LabeledPoint("Black Thursday", 1929, 230.07)](src/main/scala/com/basile/scala/ch08/Ex05.scala)
+
+[Define an abstract class Shape with an abstract method centerPoint and subclasses Rectangle and Circle . Provide appropriate constructors for the subclasses and override the centerPoint method in each subclass.](src/main/scala/com/basile/scala/ch08/Ex06.scala)
+
+[Provide a class Square that extends java.awt.Rectangle and has three constructors: one that constructs a square with a that constructs a square with corner (0, 0) and width 0 .](src/main/scala/com/basile/scala/ch08/Ex07.scala)
+
+[Compile the Person and SecretAgent classes in Section 8.6 , “ Overriding Fields ,” on page 89 and analyze the class files with javap . How many name fields are there? How many name getter methods are there? What do they get? (Hint: Use the -c and -private options.)](src/main/scala/com/basile/scala/ch08/Ex08.scala)
+
+[In the Creature class of Section 8.10 , “ Construction Order and Early Definitions ,” on page 92 , replace val range with a def . What happens when you also use a def in the Ant subclass? What happens when you use a val in the subclass? Why?](src/main/scala/com/basile/scala/ch08/Ex09.scala)
+
+[The file scala/collection/immutable/Stack.scala contains the definition class Stack\[A\] protected (protected val elems: List\[A\]) Explain the meanings of the protected keywords. (Hint: Review the discussion of private constructors in Chapter 5.)](src/main/scala/com/basile/scala/ch08/Ex10.scala)
 
 ##### Files and Regular Expressions (A1)
 
