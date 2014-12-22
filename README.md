@@ -242,7 +242,14 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 [Expand the example with the serializable Person class that stores a collection of friends. Construct a few Person objects, make some of them friends of another, and then save an Array\[Person\] to a file. Read the array back in and verify that the friend relations are intact.](src/main/scala/com/basile/scala/ch09/Ex10.scala)
 
 
-##### Traits (L1)
+##### Chapter 10
+
+[Traits (L1)](src/main/scala/com/basile/scala/ch10)
+
+[](src/main/scala/com/basile/scala/ch10/Ex.scala)
+[](src/main/scala/com/basile/scala/ch10/Ex.scala)
+[](src/main/scala/com/basile/scala/ch10/Ex.scala)
+[](src/main/scala/com/basile/scala/ch10/Ex.scala)
 
 https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch10
 
