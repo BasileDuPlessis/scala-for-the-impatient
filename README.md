@@ -267,9 +267,13 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 [Implement a class IterableInputStream that extends java.io.InputStream with the trait Iterable\[Byte\].](src/main/scala/com/basile/scala/ch10/Ex10.scala)
 
 
-##### Operators (L1)
+##### Chapter 11
 
-https://github.com/BasileDuPlessis/scala-for-the-impatient/tree/master/src/main/scala/com/basile/scala/ch11
+[Operators (L1)](src/main/scala/com/basile/scala/ch11)
+
+[](src/main/scala/com/basile/scala/ch11/Ex.scala)
+[](src/main/scala/com/basile/scala/ch11/Ex.scala)
+[](src/main/scala/com/basile/scala/ch11/Ex.scala)
 
 ##### Higher-Order Functions (L1)
 
