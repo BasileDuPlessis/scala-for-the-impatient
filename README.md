@@ -271,9 +271,26 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [Operators (L1)](src/main/scala/com/basile/scala/ch11)
 
-[](src/main/scala/com/basile/scala/ch11/Ex.scala)
-[](src/main/scala/com/basile/scala/ch11/Ex.scala)
-[](src/main/scala/com/basile/scala/ch11/Ex.scala)
+[According to the precedence rules, how are 3 + 4 -> 5 and 3 -> 4 + 5 evaluated?](src/main/scala/com/basile/scala/ch11/Ex01.scala)
+
+[The BigInt class has a pow method, not an operator. Why didn’t the Scala library designers choose ** (as in Fortran) * or ^ (as in Pascal) for a power operator?](src/main/scala/com/basile/scala/ch11/Ex02.scala)
+
+[Implement the Fraction class with operations + -](src/main/scala/com/basile/scala/ch11/Ex03.scala)
+
+[4. Implement a class Money with fields for dollars and cents. Supply + , - operators as well as comparison operators == and < . For example, Money(1, 75) + Money(0, 50) == Money(2, 25) should be true . Should you also supply * and / operators? Why or why not?](src/main/scala/com/basile/scala/ch11/Ex04.scala)
+
+[HTML table. For example, | "Java" | "Scala" || "Gosling" | "Odersky" || "JVM" | "JVM, .NET" should produce <table><tr><td>Java</td><td>Scala</td></tr><tr><td>Gosling...](src/main/scala/com/basile/scala/ch11/Ex05.scala)
+
+[Provide a class ASCIIArt whose objects contain figures such as /\_/\ ( ' ' ) ( - ) | | | precedence.](src/main/scala/com/basile/scala/ch11/Ex06.scala)
+
+[Implement a class BitSequence that stores a sequence of 64 bits packed in a Long value. Supply apply and update operators to get and set an individual bit.](src/main/scala/com/basile/scala/ch11/Ex07.scala)
+
+[Provide a class Matrix —you can choose whether you want to implement 2 × 2 matrices, square matrices of any size, or m × n matrices. Supply operations + and * . The latter should also work with scalars, for example mat * 2 . A single element should be accessible as mat(row, col) .](src/main/scala/com/basile/scala/ch11/Ex08.scala)
+
+[Define an unapply operation for the RichFile class that extracts the file path, name, and extension. For example, the file /home/cay/readme.txt has path /home/cay , name readme , and extension txt.](src/main/scala/com/basile/scala/ch11/Ex09.scala)
+
+[Define an unapplySeq operation for the RichFile class that extracts all path segments. For example, for the file /home/cay/readme.txt , you should produce a sequence of three segments: home , cay , and readme.txt.](src/main/scala/com/basile/scala/ch11/Ex10.scala)
+
 
 ##### Higher-Order Functions (L1)
 
