@@ -279,7 +279,7 @@ The [AL][1-3] refer to Martin Odersky's Scala levels.
 
 [4. Implement a class Money with fields for dollars and cents. Supply + , - operators as well as comparison operators == and < . For example, Money(1, 75) + Money(0, 50) == Money(2, 25) should be true . Should you also supply * and / operators? Why or why not?](src/main/scala/com/basile/scala/ch11/Ex04.scala)
 
-[HTML table. For example, \| "Java" \| "Scala" \|\| "Gosling" \| "Odersky" \|\| "JVM" \| "JVM, .NET" should produce <table><tr><td>Java</td><td>Scala</td></tr><tr><td>Gosling...](src/main/scala/com/basile/scala/ch11/Ex05.scala)
+[HTML table. For example, \| "Java" \| "Scala" \|\| "Gosling" \| "Odersky" \|\| "JVM" \| "JVM, .NET" should produce \<table\>\<tr\>\<td\>Java\</td\>\<td\>Scala\</td\>\</tr\>\<tr\>\<td\>Gosling...](src/main/scala/com/basile/scala/ch11/Ex05.scala)
 
 [Provide a class ASCIIArt whose objects contain figures such as /\_/\ ( ' ' ) ( - ) | | | precedence.](src/main/scala/com/basile/scala/ch11/Ex06.scala)
 
