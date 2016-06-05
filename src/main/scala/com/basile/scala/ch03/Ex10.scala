@@ -15,9 +15,8 @@ import java.awt.datatransfer._
  */
 object Ex10 extends App {
 
-  val flavors = SystemFlavorMap.getDefaultFlavorMap().asInstanceOf[SystemFlavorMap]
-
-  val flavorsBuffer : Buffer[String] = flavors.getNativesForFlavor(DataFlavor.imageFlavor)
+  val flavors = SystemFlavorMap.getDefaultFlavorMap.asInstanceOf[SystemFlavorMap]
+  val flavorBuffer: Buffer[String] = JavaConverters.asScalaBufferConverter(flavors.getNativesForFlavor(DataFlavor.imageFlavor)).asScala
 
   flavorsBuffer.foreach(println)
 
