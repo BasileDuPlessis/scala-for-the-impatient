@@ -20,7 +20,7 @@ object Ex05 extends App {
       items += ArrayBuffer(s)
       this
     }
-    override def toString = items.map(_.mkString("<td>", "<td></td>", "</td>")).mkString("<table><tr>", "</tr><tr>", "</tr></table>")
+    override def toString = items.map(_.mkString("<td>", "</td><td>", "</td>")).mkString("<table><tr>", "</tr><tr>", "</tr></table>")
   }
 
   object Table {
