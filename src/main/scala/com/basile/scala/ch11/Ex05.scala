@@ -29,6 +29,6 @@ object Ex05 extends App {
 
   val result = Table() | "Java" | "Scala" || "Gosling" | "Odersky" || "JVM" | "JVM, .NET"
 
-  assert( result.toString == "<table><tr><td>Java<td></td>Scala</td></tr><tr><td>Gosling<td></td>Odersky</td></tr><tr><td>JVM<td></td>JVM, .NET</td></tr></table>" )
+  assert( result.toString == "<table><tr><td>Java</td><td>Scala</td></tr><tr><td>Gosling</td><td>Odersky</td></tr><tr><td>JVM</td><td>JVM, .NET</td></tr></table>" )
 
 }
