@@ -7,14 +7,10 @@ package com.basile.scala.ch03
 object Ex02 extends App {
 
   def swapAdjacent(a: Array[Int]):Array[Int] = {
-    for(i <- 0 until a.length if (i%2==0)) {
-      val temp = a(i)
-      try {
-        a.update(i, a(i+1))
-        a.update(i+1, temp)
-      } catch {
-        case _: ArrayIndexOutOfBoundsException => ()
-      }
+    for(i <- 1.until(a.length).by(2)) {
+      val t = a(i)
+      a(i) = a(i-1)
+      a(i-1) = t
     }
     a
   }
